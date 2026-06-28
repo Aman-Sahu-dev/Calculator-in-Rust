@@ -20,5 +20,5 @@ enum Token {
    Let,
    Fn,
    //End
-   Eof,
+   EOF
 }
