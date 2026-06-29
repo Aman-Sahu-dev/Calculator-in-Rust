@@ -36,5 +36,28 @@ pub struct Lexer{
         while self.pos < self.input.len() && (self.input[self.pos].is_ascii_digit() || self.input[self.pos] == '.') {
             self.pos +=1;
         }
+        let num: f64 = self.input[start..self.pos]
+            .iter()
+            .collect::<String>()
+            .parse()
+            .unwrap();
+        Token::Number(num)
+    }
+    fn read_ident(&mut self) -> Token{
+        let start = self.pos;
+        while  self.pos < self.input.len() && (self.input[self.pos].is_alphanumeric || self.input[self.pos] == '_'){
+            self.pos +=1;
+        }
+        let word:String = self.input[start..self.pos].iter().collect();
+        match word.as_str(){
+            "let" => Token::Let,
+            "fn" => Token::Fn,
+            _=> Token::Ident(word),
+        }
+    }
+    fn skip_whitespace(&mut self){
+        while self.pos < self.input.len() && self.input[slef.pos].is_whitespace(){
+            self.pos +=1;
+        }
     }
  }
