@@ -41,5 +41,27 @@ pub struct Num {
         }
     }
     //------ variable loop------
+    pub struct Var {
+        pub name:String,
+    }
+    impl Node for Var {
+        fn eval(&self,env:&mut Env) -> Result<f64,String>{
+            env.get(&self.name)
+            .copied()
+            .ok_or(format!("undefined variable {}",self.name))
+        }
+    }
+    //-------variable assignment----------
+    pub struct Assignment {
+        pub name:String,
+        pub value:Box<dyn Node>,
+    }
+    impl Node for Assignment {
+        fn eval(&self,env:&mut Env) ->Result<f64,String>{
+            let val = self.value.eval(env)?;
+            env.insert(self.name.clone(),val);
+            Ok(val)
+        }  
+    }
  }
 
